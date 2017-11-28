@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -24,21 +24,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(mInflater.inflate(R.layout.recycler_view_cell, parent, false));
+        View view = mInflater.inflate(R.layout.recycler_view_cell, parent, false);
+        // TODO: 1つの view として扱うならここで onClickListener.
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-//        holder.textView.setText(mData.get(position));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO:
-                Log.i("@@@@@@", "onClick ...........");
-            }
-        });
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  // TODO:
+                  Log.i("@@@@@@", "onClick ...........");
+              }
+          });
     }
 
     @Override
@@ -55,13 +55,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView;
+        ImageButton imageButton;
 
         public ViewHolder(View itemView) {
 
             super(itemView);
 
-            textView = (TextView)itemView.findViewById(R.id.text);
+            imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
         }
     }
 }
