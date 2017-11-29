@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<String> mData;
@@ -22,15 +21,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = mInflater.inflate(R.layout.recycler_view_cell, parent, false);
         // TODO: 1つの view として扱うならここで onClickListener.
-        return new ViewHolder(view);
+        return new RecyclerViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -53,11 +52,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return itemCount;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         ImageButton imageButton;
 
-        public ViewHolder(View itemView) {
+        public RecyclerViewHolder(View itemView) {
 
             super(itemView);
 
