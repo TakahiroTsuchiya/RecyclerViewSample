@@ -1,6 +1,8 @@
 package com.example.recyclerviewsample;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +33,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+        String data = mData.get(position);
+
+        holder.getDataBinding().setVariable(BR.item, data);
+        holder.getDataBinding().executePendingBindings();
+
+        holder.getImageButton().setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                   // TODO:
@@ -52,15 +59,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return itemCount;
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        ImageButton imageButton;
+        private ImageButton imageButton;
+
+        private final ViewDataBinding dataBinding;
 
         public RecyclerViewHolder(View itemView) {
 
             super(itemView);
 
             imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
+
+            dataBinding = DataBindingUtil.bind(itemView);
         }
+
+        public ImageButton getImageButton() {
+            return imageButton;
+        }
+
+        public ViewDataBinding getDataBinding() {
+            return dataBinding;
+        }
+
     }
 }
