@@ -33,12 +33,12 @@ public class MainActivityFragment extends Fragment {
 
         // set data binding -------------
 
-        FragmentMainBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_main);
-
-        Items item = new Items("first Item");
-        item.itemFilePath.set("first File Path.");
-
-        binding.setItem(item);
+//        FragmentMainBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_main);
+//
+//        Items item = new Items("first Item");
+//        item.itemFilePath.set("first File Path.");
+//
+//        binding.setItem(item);
 
         // set recycler view -------------
         mRecyclerView = rootView.findViewById(R.id.recyclerView_base);
