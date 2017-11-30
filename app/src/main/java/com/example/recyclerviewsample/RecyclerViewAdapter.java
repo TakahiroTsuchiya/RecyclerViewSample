@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final LayoutInflater mInflater;
     private List<String> mData;
 
-    public RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<String> data) {
         mInflater = LayoutInflater.from(context);
         mData = data;
     }
@@ -33,16 +33,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        String data = mData.get(position);
+        final String data = mData.get(position);
 
-        holder.getDataBinding().setVariable(BR.item, data);
+        holder.getDataBinding().setVariable(com.example.recyclerviewsample.BR.item, new Items(data));
+
         holder.getDataBinding().executePendingBindings();
 
-        holder.getImageButton().setOnClickListener(new View.OnClickListener() {
+        holder.getDataBinding().getRoot().setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                   // TODO:
-                  Log.i("@@@@@@", "onClick ...........");
+                  Toast.makeText(view.getContext(), data, Toast.LENGTH_SHORT).show();
+//                  Log.i("@@@@@@", "onClick ...........");
               }
           });
     }
@@ -59,26 +61,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return itemCount;
     }
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageButton imageButton;
+//        private ImageButton imageButton;
 
         private final ViewDataBinding dataBinding;
 
-        public RecyclerViewHolder(View itemView) {
+        RecyclerViewHolder(View itemView) {
 
             super(itemView);
 
-            imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
+//            imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
 
             dataBinding = DataBindingUtil.bind(itemView);
         }
 
-        public ImageButton getImageButton() {
-            return imageButton;
-        }
+//        public ImageButton getImageButton() {
+//            return imageButton;
+//        }
 
-        public ViewDataBinding getDataBinding() {
+        ViewDataBinding getDataBinding() {
             return dataBinding;
         }
 
