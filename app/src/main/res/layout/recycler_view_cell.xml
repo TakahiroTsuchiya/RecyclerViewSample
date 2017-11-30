@@ -2,31 +2,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
-
     <data>
-        <variable name="item" type="java.lang.String"/>
+        <variable name="item" type="com.example.recyclerviewsample.Items"/>
+        <variable name="presenter" type="com.example.recyclerviewsample.Presenter"/>
     </data>
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <!--
-            <TextView
-                android:id="@+id/text"
-                android:text="TODO"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        -->
-        <ImageButton
-            android:id="@+id/imageButton"
+        <TextView
+            android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/image_button_contentDescription"
+            android:onClick="@{() -> presenter.onClick(item)}"
+            android:text="@{item.itemName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:srcCompat="@mipmap/ic_launcher"
             android:contentDescription="@string/image_button_contentDescription"
+            android:onClick="@{(view) -> presenter.onClick2(view, item)}"
             />
-
 
     </android.support.constraint.ConstraintLayout>
 
