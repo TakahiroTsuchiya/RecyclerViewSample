@@ -2,20 +2,25 @@ package com.example.recyclerviewsample;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.recyclerviewsample.databinding.RecyclerViewCellBinding;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<String> mData;
+    private List<Items> mData;
 
-    RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<Items> data) {
         mInflater = LayoutInflater.from(context);
         mData = data;
     }
@@ -33,12 +38,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        final String data = mData.get(position);
-        Items item = new Items(data);
-        item.itemFilePath.set("Path " + data);
+        final Items item = mData.get(position);
 
         holder.getDataBinding().setItem(item);
         holder.getDataBinding().setPresenter(new Presenter());
+
+        // TODO
+        try {
+            InputStream inputStream = holder.getDataBinding().getRoot().getResources().getAssets().open(item.itemFilePath.get());
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            holder.getImageButton().setImageBitmap(bitmap);
+        } catch (IOException e) {
+            // TODO
+        }
 
         holder.getDataBinding().executePendingBindings();
     }
@@ -59,14 +71,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         private final RecyclerViewCellBinding dataBinding;
 
+        private final ImageButton imageButton;
+
         RecyclerViewHolder(RecyclerViewCellBinding dataBinding) {
             super(dataBinding.getRoot());
             this.dataBinding = dataBinding;
+            this.imageButton = dataBinding.getRoot().findViewById(R.id.imageButton);
         }
 
         RecyclerViewCellBinding getDataBinding() {
             return dataBinding;
         }
 
+        ImageButton getImageButton() {
+            return imageButton;
+        }
     }
 }
