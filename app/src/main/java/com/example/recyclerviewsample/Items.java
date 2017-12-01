@@ -6,9 +6,9 @@ import android.databinding.ObservableField;
 public class Items extends BaseObservable {
 
     private String itemName = "dummy data";
-    public final ObservableField itemFilePath = new ObservableField<>();
+    ObservableField<String> itemFilePath = new ObservableField<>();
 
-    public Items(String itemName) {
+    Items(String itemName) {
         this.itemName = itemName;
     }
 
