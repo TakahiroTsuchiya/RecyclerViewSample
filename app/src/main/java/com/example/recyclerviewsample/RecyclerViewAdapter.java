@@ -2,12 +2,17 @@ package com.example.recyclerviewsample;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.recyclerviewsample.databinding.RecyclerViewCellBinding;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
@@ -38,6 +43,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.getDataBinding().setItem(item);
         holder.getDataBinding().setPresenter(new Presenter());
 
+        // TODO
+        try {
+            InputStream inputStream = holder.getDataBinding().getRoot().getResources().getAssets().open(item.itemFilePath.get());
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            holder.getImageButton().setImageBitmap(bitmap);
+        } catch (IOException e) {
+            // TODO
+        }
+
         holder.getDataBinding().executePendingBindings();
     }
 
@@ -57,15 +71,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         private final RecyclerViewCellBinding dataBinding;
 
+        private final ImageButton imageButton;
+
         RecyclerViewHolder(RecyclerViewCellBinding dataBinding) {
             super(dataBinding.getRoot());
             this.dataBinding = dataBinding;
-//            dataBinding.getRoot().getResources().getAssets().open();
+            this.imageButton = dataBinding.getRoot().findViewById(R.id.imageButton);
         }
 
         RecyclerViewCellBinding getDataBinding() {
             return dataBinding;
         }
 
+        ImageButton getImageButton() {
+            return imageButton;
+        }
     }
 }
