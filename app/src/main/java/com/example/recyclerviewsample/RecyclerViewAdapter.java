@@ -1,44 +1,58 @@
 package com.example.recyclerviewsample;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
+import com.example.recyclerviewsample.databinding.RecyclerViewCellBinding;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<String> mData;
+    private List<Items> mData;
 
-    public RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<Items> data) {
         mInflater = LayoutInflater.from(context);
         mData = data;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = mInflater.inflate(R.layout.recycler_view_cell, parent, false);
-        // TODO: 1つの view として扱うならここで onClickListener.
-        return new ViewHolder(view);
+        // DataBinding -------------
+
+        RecyclerViewCellBinding dataBinding = DataBindingUtil.inflate(mInflater, R.layout.recycler_view_cell, parent, false);
+
+        return new RecyclerViewHolder(dataBinding);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        holder.imageButton.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                  // TODO:
-                  Log.i("@@@@@@", "onClick ...........");
-              }
-          });
+        final Items item = mData.get(position);
+
+        holder.getDataBinding().setItem(item);
+        holder.getDataBinding().setPresenter(new Presenter());
+
+        // TODO
+        try {
+            InputStream inputStream = holder.getDataBinding().getRoot().getResources().getAssets().open(item.itemFilePath.get());
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            holder.getImageButton().setImageBitmap(bitmap);
+        } catch (IOException e) {
+            // TODO
+        }
+
+        holder.getDataBinding().executePendingBindings();
     }
 
     @Override
@@ -53,15 +67,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return itemCount;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        ImageButton imageButton;
+        private final RecyclerViewCellBinding dataBinding;
 
-        public ViewHolder(View itemView) {
+        private final ImageButton imageButton;
 
-            super(itemView);
+        RecyclerViewHolder(RecyclerViewCellBinding dataBinding) {
+            super(dataBinding.getRoot());
+            this.dataBinding = dataBinding;
+            this.imageButton = dataBinding.getRoot().findViewById(R.id.imageButton);
+        }
 
-            imageButton = (ImageButton) itemView.findViewById(R.id.imageButton);
+        RecyclerViewCellBinding getDataBinding() {
+            return dataBinding;
+        }
+
+        ImageButton getImageButton() {
+            return imageButton;
         }
     }
 }

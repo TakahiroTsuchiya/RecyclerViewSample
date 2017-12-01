@@ -31,21 +31,14 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // set data binding -------------
-
-        FragmentMainBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_main);
-
-        Items item = new Items("first Item");
-        item.itemFilePath.set("first File Path.");
-
-        binding.setItem(item);
-
         // set recycler view -------------
         mRecyclerView = rootView.findViewById(R.id.recyclerView_base);
 
-        List<String> data = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            data.add("item " + i);
+        List<Items> data = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Items item = new Items("item " + i);
+            item.itemFilePath.set("150x150_3d4070.png");
+            data.add(item);
         }
 
         mRecyclerViewAdapter = new RecyclerViewAdapter(getContext(), data);
