@@ -13,9 +13,9 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<String> mData;
+    private List<Items> mData;
 
-    RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<Items> data) {
         mInflater = LayoutInflater.from(context);
         mData = data;
     }
@@ -33,9 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        final String data = mData.get(position);
-        Items item = new Items(data);
-        item.itemFilePath.set("Path " + data);
+        final Items item = mData.get(position);
 
         holder.getDataBinding().setItem(item);
         holder.getDataBinding().setPresenter(new Presenter());
@@ -62,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         RecyclerViewHolder(RecyclerViewCellBinding dataBinding) {
             super(dataBinding.getRoot());
             this.dataBinding = dataBinding;
+//            dataBinding.getRoot().getResources().getAssets().open();
         }
 
         RecyclerViewCellBinding getDataBinding() {
